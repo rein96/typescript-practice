@@ -1,3 +1,5 @@
+import { Invoice2nd } from './classes/Invoice.js'
+
 const anchor = document.querySelector('a');
 
 // console.log(anchor.href) // this will error
@@ -22,8 +24,8 @@ const amount = document.querySelector('#amount') as HTMLInputElement;
 form.addEventListener('submit', (e: Event) => {
     e.preventDefault();
 
-    console.log({typeValue: type.value, toFromValue: toFrom.value, detailsValue: details.value, amountValue: amount.valueAsNumber});
-    
+    console.log({ typeValue: type.value, toFromValue: toFrom.value, detailsValue: details.value, amountValue: amount.valueAsNumber });
+
 })
 
 // classes 
@@ -32,7 +34,7 @@ class Invoice {
     details: string;
     amount: number;
 
-    constructor(c: string, d: string, a: number){
+    constructor(c: string, d: string, a: number) {
         this.client = c;
         this.details = d;
         this.amount = a;
@@ -49,4 +51,12 @@ const invTwo = new Invoice('luigi', 'work for website', 1000)
 let invoices: Invoice[] = [];   // Force array of object must be Invoice class
 invoices.push(invOne);
 invoices.push(invTwo);
-console.log({invOne, invTwo});
+console.log({ invOne, invTwo });
+
+
+//////////////////
+
+const invOne2nd = new Invoice2nd('mario', 'work for website', 250)
+const invTwo2nd = new Invoice2nd('luigi', 'work for website', 1000)
+
+console.log({ invOne2nd, invTwo2nd });
