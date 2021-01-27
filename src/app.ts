@@ -40,6 +40,7 @@ console.log({ invOne, invTwo });
 
 //////////////////
 import { Invoice2nd } from './classes/Invoice.js'
+import { ListTemplate } from './classes/ListTemplate.js';
 
 const invOne2nd = new Invoice2nd('mario', 'work for website', 250)
 const invTwo2nd = new Invoice2nd('luigi', 'work for website', 1000)
@@ -90,12 +91,17 @@ docs.push(docTwo)
 
 console.log({ docs });
 
+// THE REAL APP LOGIC
 // The DOM & Type Casting
 const form = document.querySelector('.new-item-form') as HTMLFormElement;
 const type = document.querySelector('#type') as HTMLSelectElement;
 const toFrom = document.querySelector('#toFrom') as HTMLInputElement;
 const details = document.querySelector('#details') as HTMLInputElement;
 const amount = document.querySelector('#amount') as HTMLInputElement;
+
+// list template instance
+const ul = document.querySelector('ul')! // class="item-list"
+const list = new ListTemplate(ul);  // ul -> container parameter constructor
 
 form.addEventListener('submit', (e: Event) => {
     e.preventDefault();
@@ -106,8 +112,7 @@ form.addEventListener('submit', (e: Event) => {
     } else {
         doc = new Payment(toFrom.value, details.value, amount.valueAsNumber)
     }
-
-    console.log({ doc });
+    list.render(doc, type.value, 'end')
 
 })
 
