@@ -106,13 +106,83 @@ const list = new ListTemplate(ul);  // ul -> container parameter constructor
 form.addEventListener('submit', (e: Event) => {
     e.preventDefault();
 
+    let values: [string, string, number] = [toFrom.value, details.value, amount.valueAsNumber]
+
+    // console.log('values', values);
+    // console.log('...values', ...values);
+    
     let doc: HasFormatter;
     if (type.value === 'invoice') {
-        doc = new Invoice2nd(toFrom.value, details.value, amount.valueAsNumber)
+        // doc = new Invoice2nd(toFrom.value, details.value, amount.valueAsNumber)  // without Tuples
+        doc = new Invoice2nd(...values) // with Tuples
     } else {
-        doc = new Payment(toFrom.value, details.value, amount.valueAsNumber)
+        // doc = new Payment(toFrom.value, details.value, amount.valueAsNumber) // without Tuples
+        doc = new Payment(...values)    // with Tuples
     }
     list.render(doc, type.value, 'end')
-
 })
 
+
+// GENERICS
+
+// <T extends object> or <T extends {name: string}>
+const addUID = <T extends { name: string }>(obj: T) => {
+    let uid = Math.floor(Math.random() * 100)
+    return { ...obj, uid }
+}
+
+let documentOne = addUID({ name: 'yoshi', age: 40 })
+// must include {name : string} , but can also add others key propery (age)
+
+// let documenTwo = addUID('hello') // this will error, cause no { name: string } in the params
+
+console.log({ documentOne });
+
+// with interfaces
+interface Resource<T> {
+    uid: number;
+    resourceName: string,
+    data: T;
+}
+
+const documentThree: Resource<object> = {
+    uid: 1,
+    resourceName: 'person',
+    data: { name: 'shaun' }
+}
+
+const documentFour: Resource<string[]> = {
+    uid: 2,
+    resourceName: 'blabla',
+    data: ['oreo', 'banana', 'strawberry']
+}
+
+console.log({ documentThree, documentFour });
+
+// ENUMS
+enum ResourceType { BOOK, AUTHOR, FILM, DIRECTOR, PERSON }
+
+interface ResourceEnum<T> {
+    uid: number;
+    resourceType: ResourceType,
+    data: T
+}
+
+const documentFive: ResourceEnum<object> = {
+    uid: 5,
+    resourceType: ResourceType.BOOK,
+    data: { title: 'name of the wind' },
+}
+
+const documentSix: ResourceEnum<object> = {
+    uid: 6,
+    resourceType: ResourceType.PERSON,
+    data: { name: 'yoshi' }
+}
+
+console.log({ documentFive, documentSix });
+
+// tuples
+let tup: [string, number, boolean] = ['ryu', 25, true]
+tup[0] = 'ken'
+tup[1] = 30
